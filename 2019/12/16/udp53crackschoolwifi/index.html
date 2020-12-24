@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-p">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>UDP转发53端口绕过校园网登录验证 | I AM A | Share life &amp; the FUCKING world</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="信息安全," />
+  
+
+  <meta name="description" content="首先声明，本文所提供的方法仅可用于学习及安全测试，请注意使用过程中所产生的授权问题及遵守相关规定。 　   许多高校使用的校园网登录机制都是利用网关拦截数据包，当用户接入校园网且未登录时，进行上网操作发出的数据包就会被网关所拦截，但是用于域名解析(DNS)的UDP53端口发出的数据包就不会被拦截，此处可以用一个简单的明令进行测试。 使用Windows内置的nslookup命令,如: 1nslook">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UDP转发53端口绕过校园网登录验证">
+<meta property="og:url" content="http://codea.ink/2019/12/16/udp53crackschoolwifi/index.html">
+<meta property="og:site_name" content="I AM A | Share life &amp; the FUCKING world">
+<meta property="og:description" content="首先声明，本文所提供的方法仅可用于学习及安全测试，请注意使用过程中所产生的授权问题及遵守相关规定。 　   许多高校使用的校园网登录机制都是利用网关拦截数据包，当用户接入校园网且未登录时，进行上网操作发出的数据包就会被网关所拦截，但是用于域名解析(DNS)的UDP53端口发出的数据包就不会被拦截，此处可以用一个简单的明令进行测试。 使用Windows内置的nslookup命令,如: 1nslook">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://codeaoss.oss-cn-beijing.aliyuncs.com/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191216222950.png">
+<meta property="og:image" content="https://codeaoss.oss-cn-beijing.aliyuncs.com/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191216223635.png">
+<meta property="og:image" content="https://codeaoss.oss-cn-beijing.aliyuncs.com/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191216225049.png">
+<meta property="og:image" content="https://codeaoss.oss-cn-beijing.aliyuncs.com/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191216223955.png">
+<meta property="og:image" content="https://codeaoss.oss-cn-beijing.aliyuncs.com/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191216224212.png">
+<meta property="og:image" content="https://codeaoss.oss-cn-beijing.aliyuncs.com/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191216224303.png">
+<meta property="article:published_time" content="2019-12-16T13:11:12.000Z">
+<meta property="article:modified_time" content="2020-12-24T05:29:49.182Z">
+<meta property="article:author" content="Cr1m3rA">
+<meta property="article:tag" content="信息安全">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://codeaoss.oss-cn-beijing.aliyuncs.com/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191216222950.png">
+
+  
+
+  
+    <link rel="icon" href="https://codeaoss.oss-cn-beijing.aliyuncs.com/suka-favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/mystyle.css">
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?45036a8bc570776c12ff0ea7b44efcf9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="I AM A | Share life & the FUCKING world" type="application/atom+xml">
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">抽屉</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">抽屉</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="p-udp53crackschoolwifi" class="article article-type-p" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">UDP转发53端口绕过校园网登录验证</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.12.16</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Cr1m3rA</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a> / <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/">信息安全</a>
+  </span>
+
+
+<!--
+      
+-->
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+       <div style="margin-top:10px;">
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-keyboard-o"></i>
+        <span class="post-meta-item-text">  字数统计: </span>
+        <span class="post-count">688字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+        <i class="fa fa-hourglass-half"></i>
+        <span class="post-meta-item-text">  阅读时长: </span>
+        <span class="post-count">2分</span>
+      </span>
+    </span>
+</div>
+
+       
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>首先声明，本文所提供的方法仅可用于学习及安全测试，请注意使用过程中所产生的授权问题及遵守相关规定。</strong></p>
+<p>　   许多高校使用的校园网登录机制都是利用网关拦截数据包，当用户接入校园网且未登录时，进行上网操作发出的数据包就会被网关所拦截，但是用于域名解析(DNS)的UDP53端口发出的数据包就不会被拦截，此处可以用一个简单的明令进行测试。</p>
+<p>使用Windows内置的nslookup命令,如:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nslookup baidu.com</span><br></pre></td></tr></table></figure>
+<p>若返回正确的ip地址，则说明你所在的网络中网关并没有对UDP53端口进行拦截，可使用本文中的方法进行登录绕过。</p>
+<p>首先准备一台有公网IP的服务器，推荐安装linux系统(Ubuntu，Debian，Centos都可以)</p>
+<p>注：绕过后的网速取决于所选用服务器的带宽和校园网单设备限速，为两者最小值。</p>
+<p>这里使用一台 Ubuntu系统服务器做为示例</p>
+<p>首先使用SSH工具连接上服务器，也可使用Windows或linux命令行连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh username@ip -p port</span><br></pre></td></tr></table></figure>
+<p>username是ssh登陆的用户，ip则是服务器公网ip，-p为指定端口，默认22。</p>
+<p>第一次登录需要更新软件源</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Ubuntu:apt-get update</span><br><span class="line"></span><br><span class="line">Centos:yum update</span><br></pre></td></tr></table></figure>
+<p>接着下载所需软件的源码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://www.softether-download.com/files/softether/v4.31-9727-beta-2019.11.18-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.31-9727-beta-2019.11.18-linux-x64-64bit.tar.gz</span><br></pre></td></tr></table></figure>
+<p>下载地址可能需要科学上网，方法此处不再赘述。</p>
+<p>完成后安装编译环境</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Ubuntu:apt-get install make gcc g++ -y`</span><br><span class="line"></span><br><span class="line">Centos:yum install make gcc g++ -y`</span><br></pre></td></tr></table></figure>
+<p>解压下载的源码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf softether-vpnserver-v4.31-9727-beta-2019.11.18-linux-x64-64bit.tar.gz`</span><br><span class="line"><span class="built_in">cd</span> vpnserver</span><br><span class="line">su</span><br></pre></td></tr></table></figure>
+<p>切换到root用户</p>
+<p>执行<code>./.install.sh</code>根据提示输入三次1</p>
+<p>安装完成后启动openVPN服务器<code>./vpnserver start</code></p>
+<p>执行<code>./vpncmd</code>并按提示输入1</p>
+<p>此时服务端所需操作全部完成，接下来进行客户端操作。</p>
+<p>在<a target="_blank" rel="noopener" href="http://www.softether-download.com/cn.aspx">http://www.softether-download.com/cn.aspx</a>  下载openvpn管理工具</p>
+<img src="https://codeaoss.oss-cn-beijing.aliyuncs.com/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191216222950.png" alt="avatar" style="zoom: 67%;" />
+
+<p>新建连接，在主机名处输入ip地址，点击确定后双击新建的连接，按照提示设置新的管理密码。</p>
+<p>在弹出的第一个窗口中点击使用vpn的其他高级配置，第二个窗口点否。</p>
+<img src="https://codeaoss.oss-cn-beijing.aliyuncs.com/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191216223635.png" alt="avatar" style="zoom:67%;" />
+
+<p>新建用户并设置用户名及密码</p>
+<img src="https://codeaoss.oss-cn-beijing.aliyuncs.com/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191216225049.png" alt="avatar" style="zoom:67%;" />
+
+<img src="https://codeaoss.oss-cn-beijing.aliyuncs.com/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191216223955.png" alt="avatar" style="zoom:67%;" />
+
+<img src="https://codeaoss.oss-cn-beijing.aliyuncs.com/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191216224212.png" alt="avatar" style="zoom:67%;" />
+
+<img src="https://codeaoss.oss-cn-beijing.aliyuncs.com/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191216224303.png" alt="avatar" style="zoom:67%;" />
+
+<p>打开压缩文件中的remote配置文件，并修改其中的url及端口。</p>
+<p>将生成的remote配置文件导入openvpn客户端中，输入设置的用户名和密码，连接成功即可绕过校园网登录验证。</p>
+
+    
+  </div>
+        
+        <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>Cr1m3rA</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2019/12/16/udp53crackschoolwifi/" target="_blank" title="UDP转发53端口绕过校园网登录验证">http://codea.ink/2019/12/16/udp53crackschoolwifi/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本网志所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处!
+          </li>
+        </ul>
+      </div>
+
+          
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持内容共享</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="https://codeaoss.oss-cn-beijing.aliyuncs.com/697412999.jpg" alt="">
+          </li>
+        
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/11/13/thesnow/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2020/02/22/unblockneteasemusic/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">Close</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-p">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container" style='max-width:768px;margin: 0 auto'></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '8d248893d30bc6591c10',
+  clientSecret: '7a54e9debbfcf2f16ed73dbe56ea3d53bb9fae17',
+  repo: 'Cr1m3rBlogComments',
+  owner: 'cr1m3ra',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['cr1m3ra'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

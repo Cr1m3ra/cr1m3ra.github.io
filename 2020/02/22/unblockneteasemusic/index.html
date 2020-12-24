@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-p">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用UnblockNeteaseMusic解鎖網易雲音樂無版權付費歌曲 | I AM A | Share life &amp; the FUCKING world</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="信息安全," />
+  
+
+  <meta name="description" content="首先聲明:本文所述方式僅限於學習交流及安全測試,請尊重創作者知識產權,遵守所在地相關法律規定  Github項目UnblockNeteaseMusic  1https:&#x2F;&#x2F;github.com&#x2F;nondanee&#x2F;UnblockNeteaseMusic 這裏主要介紹代理服務器的搭建及配置. 1.安裝node.js 1234567#Debian&#x2F;Ubuntu系统curl -sL https:&#x2F;&#x2F;deb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用UnblockNeteaseMusic解鎖網易雲音樂無版權付費歌曲">
+<meta property="og:url" content="http://codea.ink/2020/02/22/unblockneteasemusic/index.html">
+<meta property="og:site_name" content="I AM A | Share life &amp; the FUCKING world">
+<meta property="og:description" content="首先聲明:本文所述方式僅限於學習交流及安全測試,請尊重創作者知識產權,遵守所在地相關法律規定  Github項目UnblockNeteaseMusic  1https:&#x2F;&#x2F;github.com&#x2F;nondanee&#x2F;UnblockNeteaseMusic 這裏主要介紹代理服務器的搭建及配置. 1.安裝node.js 1234567#Debian&#x2F;Ubuntu系统curl -sL https:&#x2F;&#x2F;deb">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-02-22T02:38:22.000Z">
+<meta property="article:modified_time" content="2020-12-24T05:30:00.864Z">
+<meta property="article:author" content="Cr1m3rA">
+<meta property="article:tag" content="信息安全">
+<meta name="twitter:card" content="summary">
+
+  
+
+  
+    <link rel="icon" href="https://codeaoss.oss-cn-beijing.aliyuncs.com/suka-favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    
+<link rel="stylesheet" href="/css/mystyle.css">
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?45036a8bc570776c12ff0ea7b44efcf9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+<meta name="generator" content="Hexo 5.3.0"><link rel="alternate" href="/atom.xml" title="I AM A | Share life & the FUCKING world" type="application/atom+xml">
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">抽屉</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">抽屉</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+
+
+<div class="content content-post CENTER">
+   <article id="p-unblockneteasemusic" class="article article-type-p" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">使用UnblockNeteaseMusic解鎖網易雲音樂無版權付費歌曲</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2020.02.22</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Cr1m3rA</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a> / <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/">信息安全</a>
+  </span>
+
+
+<!--
+      
+-->
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+       <div style="margin-top:10px;">
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-keyboard-o"></i>
+        <span class="post-meta-item-text">  字数统计: </span>
+        <span class="post-count">369字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+        <i class="fa fa-hourglass-half"></i>
+        <span class="post-meta-item-text">  阅读时长: </span>
+        <span class="post-count">1分</span>
+      </span>
+    </span>
+</div>
+
+       
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>首先聲明:本文所述方式僅限於學習交流及安全測試,請尊重創作者知識產權,遵守所在地相關法律規定</strong></p>
+<blockquote>
+<p>Github項目UnblockNeteaseMusic</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/nondanee/UnblockNeteaseMusic</span><br></pre></td></tr></table></figure>
+<p>這裏主要介紹代理服務器的搭建及配置.</p>
+<p>1.安裝node.js</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Debian/Ubuntu系统</span></span><br><span class="line">curl -sL https://deb.nodesource.com/setup_10.x | bash -</span><br><span class="line">apt install -y nodejs git </span><br><span class="line"></span><br><span class="line"><span class="comment">#CentOS系统</span></span><br><span class="line">curl -sL https://rpm.nodesource.com/setup_10.x | bash -</span><br><span class="line">yum install nodejs git -y</span><br></pre></td></tr></table></figure>
+<p>2.運行UnblockNeteaseMusic</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/nondanee/UnblockNeteaseMusic.git</span><br><span class="line"><span class="built_in">cd</span> UnblockNeteaseMusic</span><br><span class="line">node app.js</span><br></pre></td></tr></table></figure>
+<p>這時會啓動代理服務器,默認端口8080,如需更改代理端口,可通過修改<code>config.port</code>對應數值或運行時指定參數</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node app.js -p &lt;port&gt;</span><br></pre></td></tr></table></figure>
+<p>3.開機自啓</p>
+<p>使用<code>systemd</code>進程守護(僅適用於Centos7+,Ubuntu16+)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">編輯/etc/systemd/system/UnblockNeteaseMusic.service</span><br><span class="line"></span><br><span class="line">[Unit]</span><br><span class="line">Description=UnblockNeteaseMusic</span><br><span class="line">After=network.target</span><br><span class="line">Wants=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">PIDFile=/var/run/UnblockNeteaseMusic.pid</span><br><span class="line">WorkingDirectory=/root/UnblockNeteaseMusic</span><br><span class="line">ExecStart=$(<span class="built_in">command</span> -v node) app.js -p 4567</span><br><span class="line">RestartPreventExitStatus=23</span><br><span class="line">Restart=always</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>​    啓動並設置自啓：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start UnblockNeteaseMusic</span><br><span class="line">systemctl <span class="built_in">enable</span> UnblockNeteaseMusic</span><br></pre></td></tr></table></figure>
+<p>其它系統設定原理相同（應該也不會有人拿arch做服務器</p>
+<p>4.使用方法</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">如無公網ip，需保證代理服務器和客戶端處於同一局域網內</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">Windows/Macosx:打開網易暈音樂客戶端 設置&gt;&gt;工具&gt;&gt;自定義代理&gt;&gt;http代理</span><br><span class="line">Linux:由於<span class="number">2.0</span>以上版本客戶端閹割了內置代理設置，可以使用proxychain等命令行工具設置代理</span><br><span class="line">Andorid:設置&gt;&gt;WLAN&gt;&gt;高級設置</span><br></pre></td></tr></table></figure>
+
+    
+  </div>
+        
+        <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>Cr1m3rA</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2020/02/22/unblockneteasemusic/" target="_blank" title="使用UnblockNeteaseMusic解鎖網易雲音樂無版權付費歌曲">http://codea.ink/2020/02/22/unblockneteasemusic/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本网志所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处!
+          </li>
+        </ul>
+      </div>
+
+          
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持内容共享</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="https://codeaoss.oss-cn-beijing.aliyuncs.com/697412999.jpg" alt="">
+          </li>
+        
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/12/16/udp53crackschoolwifi/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2020/11/24/pacmandatabase/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">Close</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-p">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container" style='max-width:768px;margin: 0 auto'></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '8d248893d30bc6591c10',
+  clientSecret: '7a54e9debbfcf2f16ed73dbe56ea3d53bb9fae17',
+  repo: 'Cr1m3rBlogComments',
+  owner: 'cr1m3ra',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: md5(location.pathname),
+  admin: ['cr1m3ra'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
